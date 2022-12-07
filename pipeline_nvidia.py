@@ -11,19 +11,19 @@ from numpy import loadtxt
 import numpy as np 
 import re
 
-df = pd.read_csv("./tables/KABUM - VGA_NVIDIA 20221205.csv")
+df = pd.read_csv("./tables/KABUM - VGA_NVIDIA 20221205.csv",index_col=0)
 
 class header:
     
-    txt_manufacturers = open("./lists/list_manufacturers_vga.txt","r")
+    txt_brands = open("./lists/list_brands_vga_nvidia.txt","r")
     txt_models = open("./lists/list_models_vga.txt","r")
     txt_lines = open("./lists/list_lines_vga.txt","r")
     
-    list_manufacturers = txt_manufacturers.read().splitlines() 
+    list_brands = txt_brands.read().splitlines() 
     list_models = txt_models.read().splitlines()
     list_lines = txt_lines.read().splitlines()
 
-    pattern_manufacturers = '|'.join(list_manufacturers)
+    pattern_brands= '|'.join(list_brands)
     pattern_model = '|'.join(list_models)
     pattern_line = '|'.join(list_lines)
 
@@ -40,7 +40,7 @@ def model_searcher(search_str:str,search_list:str):
         return_str = 'NA'
     return return_str
 
-df['Fabricante'] = df['Produto'].apply(lambda x:model_searcher(search_str=x,search_list=getattr(headers,'pattern_manufacturers')))
+df['Fabricante'] = df['Produto'].apply(lambda x:model_searcher(search_str=x,search_list=getattr(headers,'pattern_brands')))
 df['Modelo'] = df['Produto'].apply(lambda x:model_searcher(search_str=x,search_list=getattr(headers,'pattern_model')))
 df['Linha'] = df['Produto'].apply(lambda x:model_searcher(search_str=x,search_list=getattr(headers,'pattern_line')))
 
